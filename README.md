@@ -42,16 +42,25 @@ npm run install:all
 
 ### 2. Configure Environment Variables & AI Key
 
-A default `.env` is already pre-configured in `server/.env`:
+A default `.env` is already pre-configured in `server/.env.example`. Copy it to create your own `.env`:
+```bash
+cp server/.env.example server/.env
+```
+
+The `.env` file looks like:
 ```env
 PORT=5000
-DATABASE_URL="file:./dev.db"
+DATABASE_URL="mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/bookleaf?retryWrites=true&w=majority"
 JWT_SECRET="bookleaf_publishing_secret_jwt_key_author_portal_2026"
 NODE_ENV="development"
 
 # Optional: Add your Google Gemini API Key here (instructions below):
 GEMINI_API_KEY=""
 ```
+
+> ⚠️ **MongoDB Atlas is required.** The project uses MongoDB Atlas as the database. You need to provide a valid `DATABASE_URL` pointing to a MongoDB Atlas cluster. See the [MongoDB Atlas Free Tier](https://www.mongodb.com/cloud/atlas/register) to create a free cluster if you don't have one.
+
+> 💡 **For evaluators:** A pre-configured `.env` with working MongoDB Atlas credentials has been shared in the submission email / README notes so you can run the project immediately without any database setup.
 
 #### 🔑 How to Get a Free Google Gemini API Key:
 1. Visit **[Google AI Studio](https://aistudio.google.com/app/apikey)** (log in with any Google account).
@@ -70,10 +79,11 @@ GEMINI_API_KEY=""
 ---
 
 ### 3. Initialize & Seed Database
-Pre-populates SQLite with the official 10 authors, 18 books, and demo tickets from `bookleaf_sample_data.json`:
+Pre-populates **MongoDB Atlas** with the official 10 authors, 18 books, and demo tickets from `bookleaf_sample_data.json`:
 ```bash
 npm run seed
 ```
+> ⚠️ **Network Required:** The seed command connects to MongoDB Atlas over the internet. Ensure you have a valid `DATABASE_URL` in `server/.env` before running.
 
 ---
 
@@ -157,7 +167,7 @@ What happens when the LLM API is down, rate-limited, or unconfigured?
 
 - **Frontend**: React 18, TypeScript, Tailwind CSS, Lucide React, Socket.io-client, Axios.
 - **Backend**: Node.js, Express.js (ES Modules), TypeScript, Prisma ORM.
-- **Database**: SQLite (zero-config, relational integrity, foreign key cascades).
+- **Database**: **MongoDB Atlas** (cloud-hosted, zero local setup required, Prisma ODM with ObjectId mapping).
 - **Real-Time**: Socket.io duplex WebSockets with fallback long-polling.
 - **Validation**: Zod schema validation with descriptive error payloads.
 - **Documentation**: Swagger UI & OpenAPI 3.0 specification.

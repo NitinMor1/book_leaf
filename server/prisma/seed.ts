@@ -2,6 +2,10 @@ import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const prisma = new PrismaClient();
 
@@ -20,6 +24,7 @@ async function main() {
   // 1. Create Admin Accounts
   const admin1 = await prisma.user.create({
     data: {
+      authorId: 'ADMIN001',
       name: 'Saloni Mourya (BookLeaf Ops)',
       email: 'admin@bookleafpub.com',
       password: adminPasswordHash,
@@ -32,6 +37,7 @@ async function main() {
 
   const admin2 = await prisma.user.create({
     data: {
+      authorId: 'ADMIN002',
       name: 'Operations Support Team',
       email: 'support@bookleafpub.com',
       password: adminPasswordHash,
